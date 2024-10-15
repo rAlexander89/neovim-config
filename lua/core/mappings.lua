@@ -53,7 +53,6 @@ M.general = {
       "LSP formatting",
     },
   },
-
   t = {
     ["<C-x>"] = { vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true), "Escape terminal mode" },
   },
@@ -352,7 +351,6 @@ M.nvterm = {
       end,
       "Toggle vertical term",
     },
-
     -- new
     ["<leader>h"] = {
       function()
@@ -372,7 +370,6 @@ M.nvterm = {
 
 M.whichkey = {
   plugin = true,
-
   n = {
     ["<leader>wK"] = {
       function()
@@ -414,7 +411,6 @@ M.blankline = {
 
 M.gitsigns = {
   plugin = true,
-
   n = {
     -- Navigation through hunks
     ["]c"] = {
@@ -430,7 +426,6 @@ M.gitsigns = {
       "Jump to next hunk",
       opts = { expr = true },
     },
-
     ["[c"] = {
       function()
         if vim.wo.diff then
@@ -459,19 +454,30 @@ M.gitsigns = {
       end,
       "Preview hunk",
     },
-
-    ["<leader>gb"] = {
-      function()
-        package.loaded.gitsigns.blame_line()
-      end,
-      "Blame line",
-    },
-
     ["<leader>td"] = {
       function()
         require("gitsigns").toggle_deleted()
       end,
       "Toggle deleted",
+    },
+
+    ["<leader>gv"] = {
+      function()
+        require('gitsigns').diffthis()
+      end,
+      "View git diff",
+    },
+    ["<leader>gV"] = {
+      function()
+        require('gitsigns').diffthis('~')
+      end,
+      "View git diff against last commit",
+    },
+    ["<leader>gb"] = {
+      function()
+        require('gitsigns').toggle_current_line_blame()
+      end,
+      "Toggle current line git blame",
     },
   },
 }
