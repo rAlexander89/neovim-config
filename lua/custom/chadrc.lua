@@ -7,8 +7,11 @@ local M = {}
 
 -- Set the theme dynamically
 M.ui = {
-  theme = "outrun",
-  theme_toggle = { "outrun" }
+  theme = "catppuccin",
+  theme_toggle = { "catppuccin" },
+  statusline = {
+    path_enabled = true,
+  }
 }
 
 M.plugins = "custom.plugins"

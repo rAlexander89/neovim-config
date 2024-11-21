@@ -38,6 +38,20 @@ M.dap = {
       "<cmd>lua require'dap'.restart()<CR>",
       "Restart Debugging"
     },
+    ["<leader>ds"] = { -- Add this mapping
+      "<cmd>lua require'dap'.run()<CR>",
+      "Start Debugging"
+    },
+    ["<leader>dt"] = {
+      "<cmd>lua require'dap'.terminate(); require'dapui'.close()<CR>",
+      "Terminate Debugging"
+    },
+    ["<leader>dx"] = {
+      function()
+        print(vim.inspect(require('dap').configurations.go))
+      end,
+      "Inspect DAP Config"
+    },
   },
 }
 -- Function to toggle between relative and absolute line numbering
