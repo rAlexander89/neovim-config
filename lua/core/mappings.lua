@@ -37,10 +37,10 @@ M.general = {
     -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
     -- empty mode is same as using <cmd> :map
     -- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
-    ["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
-    ["k"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
-    ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
-    ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
+    -- ["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
+    -- ["k"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
+    -- ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
+    -- ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
 
     -- new buffer
     ["<leader>b"] = { "<cmd> enew <CR>", "New buffer" },
@@ -260,8 +260,14 @@ M.nvimtree = {
       end,
       "Toggle focus between NvimTree and buffer"
     },
-    -- focus
-    -- ["<leader>e"] = { "<cmd> NvimTreeFocus <CR>", "Focus nvimtree" },
+    ["<leader>ef"] = {
+      function()
+        local api = require("nvim-tree.api")
+        api.node.open.edit()
+      end,
+      "Open file or directory",
+      buffer = true -- this makes the mapping local to nvim-tree buffer
+    },
   },
 }
 
@@ -290,6 +296,21 @@ M.telescope = {
 
     ["<leader>ma"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
   },
+  i = {
+    -- navigation in insert mode
+    ["<C-j>"] = {
+      function()
+        require("telescope.actions").move_selection_next()
+      end,
+      "Move to next result",
+    },
+    ["<C-k>"] = {
+      function()
+        require("telescope.actions").move_selection_previous()
+      end,
+      "Move to previous result",
+    },
+  },
 }
 
 M.nvterm = {
@@ -317,6 +338,8 @@ M.nvterm = {
       end,
       "Toggle vertical term",
     },
+
+    ["<C-c>"] = { "<C-c>", "Send interrupt signal" }
   },
 
   n = {

@@ -52,6 +52,10 @@ M.dap = {
       end,
       "Inspect DAP Config"
     },
+    ["<leader>pc"] = {
+      "<cmd>lua require('dap').clear_breakpoints()<CR>",
+      "Clear all breakpoints"
+    },
   },
 }
 -- Function to toggle between relative and absolute line numbering
@@ -160,6 +164,7 @@ M.custom = {
       function()
         vim.cmd('source ~/.config/nvim/init.lua')
         require('base46').load_all_highlights()
+        vim.notify('Neovim config reloaded!', vim.log.levels.INFO)
       end,
       "Source/Reload nvim config"
     },
