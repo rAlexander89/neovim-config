@@ -2,12 +2,12 @@ local M = {}
 
 M.base_30 = {
   darker_black = "#090819",
-  black = "#231b2f",
+  black = "#0c0a20",
   black2 = "#0f0c23",
   white = "#f2f3f7",
 
   -- Required additional base colors
-  one_bg = "#231b2f",
+  one_bg = "#131033",
   one_bg2 = "#1c1940",
   one_bg3 = "#24214d",
   grey = "#484f7d",
@@ -17,6 +17,7 @@ M.base_30 = {
   red = "#ff4da6",
   baby_pink = "#ff2afc",
   pink = "#ff2afc",
+  -- line = "#ff0000",
   line = "#24214d",
   green = "#42c6ff",
   vibrant_green = "#42c6ff",
@@ -37,9 +38,8 @@ M.base_30 = {
 }
 
 M.base_16 = {
-  base00 = "#1a1625",
-  -- base00 = "#160b24",
-  -- base00 = "#0c0a20",
+  base00 = "#0c0a20",
+  -- base00 = "#1a1625",
   base01 = "#131033",
   base02 = "#1c1940",
   base03 = "#24214d",
@@ -49,16 +49,41 @@ M.base_16 = {
   base07 = "#ffffff",
   base08 = "#f8f8f2", -- struct fields
   base09 = "#ffd094", -- return type nil and such??
-  base0A = "#ff9fce", -- keywords?
+  base0A = "#ff9fce", -- keywords}
   base0B = "#9ae8e9", -- strings
-  base0C = "#80d9ff",
-  -- base0C = "#42c6ff",
+  base0C = "#93e2e6",
   base0D = "#ff80ce", -- struct data types
-  -- base0D = "#ff99ce", -- keywords?
   base0E = "#df85ff",
-  base0F = "#ffe566" -- grouping stuff
+  base0F = "#ffe566"  -- grouping stuff
 }
 
 M.type = "dark"
+M.transparent = true
+
+-- M.override = {
+--   TelescopeSelection = {
+--     bg = "#42c6ff",     -- Replace with your desired highlight color
+--     fg = "#f2f3f7"      -- Text color for selected item
+--   },
+--   TelescopeSelectionCaret = {
+--     fg = "#ff4da6"     -- Color for the caret in the selected row
+--   },
+--   TelescopeBorder = {
+--     fg = "#62dfff"
+--   },
+--   TelescopePromptBorder = {
+--     fg = "#42c6ff"
+--   },
+--   TelescopeResultsBorder = {
+--     fg = "#42c6ff"
+--   },
+--   TelescopePreviewBorder = {
+--     fg = "#42c6ff"
+--   },
+--   TelescopeMatching = {
+--     fg = "#ffe566"     -- Color for matched text
+--   }
+-- }
+
 
 return M
