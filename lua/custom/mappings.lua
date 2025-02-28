@@ -169,6 +169,12 @@ M.custom = {
       "Source/Reload nvim config"
     },
   },
+  v = {
+    -- Simple j/k mappings for visual mode without expressions
+    -- fixes an intermittent problem with some expressions
+    ["j"] = { "j", "Move down" },
+    ["k"] = { "k", "Move up" },
+  },
   x = {
     ["<M-j>"] = {
       ":m '>+1<CR>gv=gv",
