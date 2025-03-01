@@ -222,8 +222,10 @@ local default_plugins = {
       telescope.setup(opts)
 
       -- load extensions
-      for _, ext in ipairs(opts.extensions_list) do
-        telescope.load_extension(ext)
+      if opts and opts.extensions_list then
+        for _, ext in ipairs(opts.extensions_list) do
+          telescope.load_extension(ext)
+        end
       end
     end,
   },
