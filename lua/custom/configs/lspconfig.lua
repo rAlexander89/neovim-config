@@ -22,23 +22,31 @@ end
 lspconfig.ts_ls.setup({ -- tsserver is deprecated? use ts_ls
   on_attach = function(client, bufnr)
     on_attach(client, bufnr)
-    -- format on save for js/ts files
-    if client.supports_method("textDocument/formatting") then
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.format({
-            async = false,
-            timeout_ms = 3000,
-            -- ensure 2 space indentation
-            formatting_options = {
-              tabSize = 2,
-              insertSpaces = true
-            }
-          })
-        end,
-      })
+    local file_name = vim.api.nvim_buf_get_name(bufnr)
+    local file_ext = file_name:match("%.([^%.]+)$")
+    local is_js = file_ext == "js" or file_ext == "ts" or file_ext == "jsx" or file_ext == "tsx"
+    if not (file_ext and is_js) then
+      return
     end
+
+    -- format on save for js/ts files
+    -- if client.supports_method("textDocument/formatting") then
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({
+          async = false,
+          timeout_ms = 3000,
+          -- ensure 2 space indentation
+          formatting_options = {
+            tabSize = 2,
+            insertSpaces = true,
+            semicolons = true -- ensure semicolons are added
+          }
+        })
+      end,
+    })
+    -- end
   end,
   capabilities = capabilities,
   settings = {
@@ -150,7 +158,7 @@ lspconfig.gopls.setup {
 
 
 -- local servers = { 'ccls', 'cmake', 'tsserver', 'templ' }
-local servers = { 'ccls', 'cmake', 'templ', 'cssls' }
+local servers = { 'ccls', 'cmake', 'cssls' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup({
     on_attach = on_attach,
@@ -158,27 +166,59 @@ for _, lsp in ipairs(servers) do
   })
 end
 
-lspconfig.html.setup({
+
+lspconfig.templ.setup({
   on_attach = function(client, bufnr)
     on_attach(client, bufnr)
-    -- Enable format on save
-    if client.supports_method("textDocument/formatting") then
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.format({ bufnr = bufnr })
-        end,
-      })
+    local file_name = vim.api.nvim_buf_get_name(bufnr)
+    local file_ext = file_name:match("%.([^%.]+)$")
+    local is_templ = file_ext == "templ"
+    if not (file_ext and is_templ) then
+      return
     end
+
+    -- Enable format on save
+    vim.api.nvim_create_autocmd({ "BufWritePre" }, { pattern = { "*.templ" }, callback = custom_format })
   end,
   capabilities = capabilities,
-  filetypes = { "html", "templ", "htmx" },
+  filetypes = { "html", "templ" },
 })
 
 
---  lspconfig.htmx.setup({
---    filetypes = { "html", "templ" },
---  })
+lspconfig.htmx.setup({
+  filetypes = { "html", "templ" },
+})
+
+
+
+
+
+lspconfig.html.setup({
+  on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
+    local file_name = vim.api.nvim_buf_get_name(bufnr)
+    local file_ext = file_name:match("%.([^%.]+)$")
+    local is_html = file_ext == "html"
+    if not (file_ext and is_html) then
+      return
+    end
+
+    -- Enable format on save
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({ bufnr = bufnr })
+      end,
+    })
+  end,
+  capabilities = capabilities,
+  filetypes = { "html" },
+})
+
+
+lspconfig.htmx.setup({
+  filetypes = { "html", "templ" },
+})
 
 
 -- Setup lua_ls
