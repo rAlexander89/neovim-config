@@ -91,6 +91,11 @@ local default_plugins = {
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "git")
       require("gitsigns").setup(opts)
+      vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {
+        fg = "#42c6ff",     -- bright cyan
+        bg = "NONE",
+        italic = true,
+      })
     end,
   },
 

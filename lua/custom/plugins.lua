@@ -53,6 +53,10 @@ local plugins = {
     end,
   },
   {
+    "digitaltoad/vim-pug",
+    ft = { "pug", "jade" },
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
@@ -71,6 +75,8 @@ local plugins = {
         "typescript", -- for better js/ts support
         "regex",      -- for regex in javascript
         "markdown",   -- for jsdoc preview
+        --
+        "pug",
       },
       highlight = {
         enable = true,
@@ -147,7 +153,14 @@ local plugins = {
         layouts = {
           {
             elements = {
-              { id = "scopes",      size = 0.60, },
+              {
+                id = "scopes",
+                size = 0.60,
+                options = {
+                  expand_lines = true,
+                  indent = 2
+                }
+              },
               { id = 'stacks',      size = 0.30 },
               { id = 'breakpoints', size = 0.10 },
             },
@@ -156,14 +169,6 @@ local plugins = {
           },
           {
             elements = {
-              -- {
-              --   id = 'repl',
-              --   options = {
-              --     follow = true,
-              --     word_wrap = true
-              --   },
-              --   size = 0.70
-              -- },
               {
                 id = 'console',
                 options = {
@@ -173,11 +178,71 @@ local plugins = {
                 size = 1.0
               },
             },
-            size = 20,
+            size = 0.3,          -- 90% of the width
             position = 'bottom', -- Can be "bottom" or "top"
           },
         },
+        controls = {
+          enabled = true,
+          element = "repl",
+          icons = {
+            pause = "",
+            play = "",
+            step_into = "",
+            step_over = "",
+            step_out = "",
+            step_back = "",
+            run_last = "",
+            terminate = "",
+          },
+        },
+        floating = {
+          max_height = nil,
+          max_width = nil,
+          border = "single",
+          mappings = {
+            close = { "q", "<Esc>" },
+          },
+        },
+        render = {
+          max_value_lines = 100, -- maximum number of value lines to display
+        }
       })
+      -- dapui.setup({
+      --   layouts = {
+      --     {
+      --       elements = {
+      --         { id = "scopes",      size = 0.60, },
+      --         { id = 'stacks',      size = 0.30 },
+      --         { id = 'breakpoints', size = 0.10 },
+      --       },
+      --       size = 56,
+      --       position = 'right', -- Can be "left" or "right"
+      --     },
+      --     {
+      --       elements = {
+      -- {
+      --   id = 'repl',
+      --   options = {
+      --     follow = true,
+      --     word_wrap = true
+      --   },
+      --   size = 0.7
+      -- },
+      --         {
+      --           id = 'console',
+      --           options = {
+      --             follow = true,
+      --             word_wrap = true
+      --           },
+      --           size = 1.0
+      --         },
+      --       },
+      --       size = 20,
+      --       position = 'bottom', -- Can be "bottom" or "top"
+      --     },
+      --   },
+      -- })
 
       -- register Go-specific configuration
       dap.configurations.go = dap.configurations.go or {}

@@ -3,7 +3,7 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 local opts = {
   sources = { null_ls.builtins.formatting.gofumpt.with({
-    extra_args = { "-s" },     -- gofumpt specific argument to prevent new lines
+    extra_args = { "-s" }, -- gofumpt specific argument to prevent new lines
   }),
     null_ls.builtins.formatting.goimports_reviser,
     null_ls.builtins.formatting.golines.with({
@@ -12,11 +12,13 @@ local opts = {
     null_ls.builtins.formatting.prettier.with({
       filetypes = { "html", "css", "json", "yaml", "markdown", "javascript", "javascriptreact", "typescript", "typescriptreact", "templ" },
       extra_args = {
-        "--tab-width", "4",
+        "--tab-width", "2",
         "--print-width", "120",
         "--single-quote", "true",
-        "--trailing-comma", "es5"
+        "--trailing-comma", "es5",
+        "--semi", "true"
       }
+
     }),
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.diagnostics.eslint.with({

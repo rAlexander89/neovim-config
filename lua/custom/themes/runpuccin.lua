@@ -60,30 +60,4 @@ M.base_16 = {
 M.type = "dark"
 M.transparent = true
 
--- M.override = {
---   TelescopeSelection = {
---     bg = "#42c6ff",     -- Replace with your desired highlight color
---     fg = "#f2f3f7"      -- Text color for selected item
---   },
---   TelescopeSelectionCaret = {
---     fg = "#ff4da6"     -- Color for the caret in the selected row
---   },
---   TelescopeBorder = {
---     fg = "#62dfff"
---   },
---   TelescopePromptBorder = {
---     fg = "#42c6ff"
---   },
---   TelescopeResultsBorder = {
---     fg = "#42c6ff"
---   },
---   TelescopePreviewBorder = {
---     fg = "#42c6ff"
---   },
---   TelescopeMatching = {
---     fg = "#ffe566"     -- Color for matched text
---   }
--- }
-
-
 return M
