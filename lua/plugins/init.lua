@@ -92,7 +92,7 @@ local default_plugins = {
       dofile(vim.g.base46_cache .. "git")
       require("gitsigns").setup(opts)
       vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {
-        fg = "#42c6ff",     -- bright cyan
+        fg = "#42c6ff", -- bright cyan
         bg = "NONE",
         italic = true,
       })
@@ -307,7 +307,26 @@ local default_plugins = {
         ft = { "markdown", "Avante" },
       },
     },
-  }
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && npm install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+    config = function()
+      vim.g.mkdp_auto_start = 0
+      vim.g.mkdp_auto_close = 1
+      vim.g.mkdp_refresh_slow = 0
+      vim.g.mkdp_command_for_global = 0
+      vim.g.mkdp_open_to_the_world = 0
+      vim.g.mkdp_open_ip = ''
+      vim.g.mkdp_port = ''
+      vim.g.mkdp_page_title = '${name}'
+    end,
+  },
 }
 
 local config = require("core.utils").load_config()

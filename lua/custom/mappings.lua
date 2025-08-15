@@ -166,6 +166,36 @@ M.custom = {
       "Toggle line numbering",
     },
     ["<leader>ld"] = { '"_dd', "Delete line without copying" },
+    ["<leader>lg"] = {
+      function()
+        local filetype = vim.bo.filetype
+        local current_line = vim.fn.getline('.')
+
+        -- trim whitespace from the line
+        local indent = current_line:match("^(%s*)")
+        local message = current_line:match("^%s*(.-)%s*$")
+
+        if message == "" then
+          vim.notify("empty line", vim.log.levels.WARN)
+          return
+        end
+
+        local wrapped_msg
+        if filetype == "go" then
+          wrapped_msg = string.format('fmt.Println("%s")', message)
+        elseif filetype == "ruby" then
+          wrapped_msg = string.format('puts "%s"', message)
+        elseif filetype == "javascript" or filetype == "typescript" or filetype == "javascriptreact" or filetype == "typescriptreact" then
+          wrapped_msg = string.format('console.log("%s")', message)
+        else
+          vim.notify("unsupported filetype: " .. filetype, vim.log.levels.WARN)
+          return
+        end
+
+        vim.fn.setline('.', indent .. wrapped_msg)
+      end,
+      "wrap current line in logger"
+    },
     ["<leader>gf"] = {
       function()
         vim.cmd "tab split"
@@ -254,4 +284,19 @@ M.custom = {
     },
   },
 }
+
+M.markdown = {
+  plugin = true,
+  n = {
+    ["<leader>mp"] = {
+      "<cmd>MarkdownPreview<CR>",
+      "markdown preview"
+    },
+    ["<leader>ms"] = {
+      "<cmd>MarkdownPreviewStop<CR>",
+      "stop markdown preview"
+    },
+  },
+}
+
 return M

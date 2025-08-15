@@ -256,6 +256,7 @@ local plugins = {
           program = ".",
           envFile = vim.fn.getcwd() .. "/.env",
           mode = "debug",
+          console = "internalConsole",
         }
       )
       table.insert(dap.configurations.go, {
@@ -266,6 +267,7 @@ local plugins = {
         envFile = vim.fn.getcwd() .. "/.env",
         mode = "debug",
         args = { "-production=true" },
+        console = "internalConsole",
       })
       table.insert(dap.configurations.go, {
         type = "go",
@@ -275,13 +277,15 @@ local plugins = {
         envFile = vim.fn.getcwd() .. "/.env",
         mode = "debug",
         args = { "-staging=true" },
+        console = "internalConsole",
       })
       table.insert(dap.configurations.go, {
         type = "go",
         name = "Fokist API: Dev",
         request = "launch",
         program = "${workspaceFolder}/cmd/main.go",
-        mode = "debug"
+        mode = "debug",
+        console = "internalConsole",
       })
 
       local dapgo = require("dap-go")
