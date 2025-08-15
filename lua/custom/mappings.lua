@@ -91,9 +91,58 @@ local function reload_theme()
 end
 
 
+-- function to insert file path as comment at the top of file
+local function insert_file_path_header()
+  -- get the current file path relative to the project root
+  local file_path = vim.fn.expand("%:p")
+
+  -- try to get the git root directory
+  local git_root = vim.fn.systemlist("git rev-parse --show-toplevel 2>/dev/null")[1]
+
+  -- if we're in a git repo, make the path relative to the git root
+  if git_root and git_root ~= "" and string.find(file_path, git_root) then
+    file_path = string.sub(file_path, string.len(git_root) + 2)
+  end
+
+  -- create the comment line based on filetype
+  local comment_line
+  local filetype = vim.bo.filetype
+
+  -- handle main languages first with specific formatting
+  if filetype == "go" then
+    comment_line = "// " .. file_path
+  elseif filetype == "javascript" or filetype == "javascriptreact" or filetype == "typescript" or filetype == "typescriptreact" then
+    comment_line = "// " .. file_path
+  elseif filetype == "lua" then
+    comment_line = "-- " .. file_path
+  elseif filetype == "html" or filetype == "xml" then
+    comment_line = "<!-- " .. file_path .. " -->"
+  else
+    -- default fallback
+    comment_line = "// " .. file_path
+  end
+
+  -- insert at the beginning of the file
+  vim.api.nvim_buf_set_lines(0, 0, 0, false, { comment_line, "" })
+
+  -- move cursor past the inserted lines to the third line (or to end of file if fewer lines)
+  local line_count = vim.api.nvim_buf_line_count(0)
+  local target_line = math.min(1, line_count)
+  vim.api.nvim_win_set_cursor(0, { target_line, 0 })
+end
 
 M.custom = {
   n = {
+    ["<leader>fp"] = {
+      insert_file_path_header,
+      "Insert file path as header comment"
+    },
+    ["<leader>da"] = {
+      function()
+        require('telescope.builtin').diagnostics()
+      end,
+      "Show all diagnostics with Telescope"
+    },
     ["<leader>tr"] = {
       reload_theme,
       "Reload  theme"
@@ -117,6 +166,36 @@ M.custom = {
       "Toggle line numbering",
     },
     ["<leader>ld"] = { '"_dd', "Delete line without copying" },
+    ["<leader>lg"] = {
+      function()
+        local filetype = vim.bo.filetype
+        local current_line = vim.fn.getline('.')
+
+        -- trim whitespace from the line
+        local indent = current_line:match("^(%s*)")
+        local message = current_line:match("^%s*(.-)%s*$")
+
+        if message == "" then
+          vim.notify("empty line", vim.log.levels.WARN)
+          return
+        end
+
+        local wrapped_msg
+        if filetype == "go" then
+          wrapped_msg = string.format('fmt.Println("%s")', message)
+        elseif filetype == "ruby" then
+          wrapped_msg = string.format('puts "%s"', message)
+        elseif filetype == "javascript" or filetype == "typescript" or filetype == "javascriptreact" or filetype == "typescriptreact" then
+          wrapped_msg = string.format('console.log("%s")', message)
+        else
+          vim.notify("unsupported filetype: " .. filetype, vim.log.levels.WARN)
+          return
+        end
+
+        vim.fn.setline('.', indent .. wrapped_msg)
+      end,
+      "wrap current line in logger"
+    },
     ["<leader>gf"] = {
       function()
         vim.cmd "tab split"
@@ -205,4 +284,19 @@ M.custom = {
     },
   },
 }
+
+M.markdown = {
+  plugin = true,
+  n = {
+    ["<leader>mp"] = {
+      "<cmd>MarkdownPreview<CR>",
+      "markdown preview"
+    },
+    ["<leader>ms"] = {
+      "<cmd>MarkdownPreviewStop<CR>",
+      "stop markdown preview"
+    },
+  },
+}
+
 return M
