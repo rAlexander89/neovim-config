@@ -21,6 +21,7 @@ local plugins = {
   },
   {
     "neovim/nvim-lspconfig",
+    version = "v2.*",  -- Pin to v2.x which supports old API
     config = function()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
