@@ -110,7 +110,6 @@ local plugins = {
   },
   {
     "nvim-telescope/telescope.nvim",
-    commit = "a0bbec21143c7bc5f8bb02e0005fa0b982edc026", -- Pin to version compatible with nvim 0.10.2
     opts = function()
       local actions = require("telescope.actions")
 
@@ -332,10 +331,6 @@ local plugins = {
         providers_regex_syntax_denylist = {},
       })
     end
-  },
-  {
-    "iamcco/markdown-preview.nvim",
-    commit = "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee", -- Pin to prevent sync issues
   },
 }
 return plugins
