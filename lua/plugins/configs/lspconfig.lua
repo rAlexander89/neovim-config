@@ -1,6 +1,15 @@
 dofile(vim.g.base46_cache .. "lsp")
 require "nvchad.lsp"
 
+-- Temporarily suppress deprecation warnings while we use the old lspconfig API
+local notify = vim.notify
+vim.notify = function(msg, level, opts)
+  if msg:match("lspconfig.*deprecated") then
+    return
+  end
+  notify(msg, level, opts)
+end
+
 local M = {}
 local utils = require "core.utils"
 
