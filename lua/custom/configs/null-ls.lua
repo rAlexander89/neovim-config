@@ -1,4 +1,4 @@
-local null_ls = require("null-ls")
+local null_ls = require("null-ls")  -- none-ls is backwards compatible with null-ls require
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 local opts = {

@@ -33,7 +33,7 @@ local plugins = {
     end,
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",  -- Community fork of null-ls, compatible with nvim 0.11+
     ft = { "go", "javascript", "javascriptreact", "typescript", "typescriptreact" },
     opts = function()
       return require "custom.configs.null-ls"

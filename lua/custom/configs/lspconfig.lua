@@ -1,3 +1,12 @@
+-- Suppress lspconfig deprecation warnings
+local notify = vim.notify
+vim.notify = function(msg, level, opts)
+  if msg and type(msg) == "string" and msg:match("lspconfig.*deprecated") then
+    return
+  end
+  notify(msg, level, opts)
+end
+
 local on_attach = require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
 
