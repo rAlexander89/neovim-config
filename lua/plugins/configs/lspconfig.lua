@@ -17,9 +17,8 @@ local utils = require "core.utils"
 M.on_attach = function(client, bufnr)
   utils.load_mappings("lspconfig", { buffer = bufnr })
 
-  if client.server_capabilities.signatureHelpProvider then
-    require("nvchad.signature").setup(client)
-  end
+  -- Note: nvchad.signature was removed in v3.0
+  -- Signature help still works via LSP, just without the custom NvChad UI
 end
 
 -- disable semantic tokens
