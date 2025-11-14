@@ -16,6 +16,9 @@ local default_plugins = {
     "NvChad/ui",
     branch = "v3.0",
     lazy = false,
+    init = function()
+      require("core.utils").load_mappings "tabufline"
+    end,
     config = function()
       require "nvchad"
     end,

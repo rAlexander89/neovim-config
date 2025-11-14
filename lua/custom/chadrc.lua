@@ -47,6 +47,34 @@ M.base46 = {
       bg = "#ff4da6",
       fg = "#f2f3f7"
     },
+    -- Make tabline visible even with transparency enabled
+    TbBufOn = {
+      fg = "#f2f3f7",
+      bg = "#24214d",
+    },
+    TbBufOff = {
+      fg = "#7984D1",
+      bg = "#1c1940",
+    },
+    TbFill = {
+      bg = "#0c0a20",
+    },
+    TbBufOnClose = {
+      fg = "#ff4da6",
+      bg = "#24214d",
+    },
+    TbBufOffClose = {
+      fg = "#7984D1",
+      bg = "#1c1940",
+    },
+    TbBufOnModified = {
+      fg = "#42c6ff",
+      bg = "#24214d",
+    },
+    TbBufOffModified = {
+      fg = "#ff4da6",
+      bg = "#1c1940",
+    },
   }
 }
 
