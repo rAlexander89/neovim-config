@@ -1,18 +1,11 @@
 --@type ChadrcConfig
 local M = {}
 
--- Set the theme dynamically
-M.ui = {
+-- v3.0: theme config moved to base46
+M.base46 = {
   theme = "runpuccin",
   theme_toggle = { "runpuccin" },
   transparency = true,
-  statusline = {
-    path_enabled = true,
-  },
-  -- Add rounded borders config
-  border = "rounded",
-  float_border = "rounded",
-  telescope = { style = "bordered" },
   hl_override = {
     -- make strings italic
     ["@string"] = {
@@ -57,7 +50,19 @@ M.ui = {
   }
 }
 
-
+-- v3.0: UI-specific config (non-theme settings)
+M.ui = {
+  statusline = {
+    path_enabled = true,  -- Your original setting
+  },
+  telescope = {
+    style = "bordered",  -- Your original setting
+  },
+  tabufline = {
+    enabled = true,
+    lazyload = false,  -- Show tabs immediately on startup
+  },
+}
 
 M.plugins = "custom.plugins"
 M.mappings = require "custom.mappings"
