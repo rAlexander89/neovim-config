@@ -1,0 +1,20 @@
+graph TD
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Great!]
+    B -->|No| D[Check logs]
+    C --> E[End]
+    D --> E[End]
+
+flowchart LR
+    A[Neovim] --> B[Mermaid Plugin]
+    B --> C[Treesitter]
+    C --> D[Syntax Highlighting]
+    D --> E[Beautiful Diagrams]
+
+sequenceDiagram
+    participant User
+    participant Neovim
+    participant Mermaid
+    User->>Neovim: Open .mmd file
+    Neovim->>Mermaid: Load syntax
+    Mermaid-->>User: Highlighted diagram
