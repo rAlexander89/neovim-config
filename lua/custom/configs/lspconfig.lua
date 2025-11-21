@@ -1,3 +1,12 @@
+-- Suppress lspconfig deprecation warnings
+local notify = vim.notify
+vim.notify = function(msg, level, opts)
+  if msg and type(msg) == "string" and msg:match("lspconfig.*deprecated") then
+    return
+  end
+  notify(msg, level, opts)
+end
+
 local on_attach = require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
 
@@ -21,32 +30,12 @@ end
 
 lspconfig.ts_ls.setup({ -- tsserver is deprecated? use ts_ls
   on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
-    local file_name = vim.api.nvim_buf_get_name(bufnr)
-    local file_ext = file_name:match("%.([^%.]+)$")
-    local is_js = file_ext == "js" or file_ext == "ts" or file_ext == "jsx" or file_ext == "tsx"
-    if not (file_ext and is_js) then
-      return
-    end
+    -- Disable ts_ls formatting - we use Prettier (via null-ls) instead
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
 
-    -- format on save for js/ts files
-    -- if client.supports_method("textDocument/formatting") then
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.format({
-          async = false,
-          timeout_ms = 3000,
-          -- ensure 2 space indentation
-          formatting_options = {
-            tabSize = 2,
-            insertSpaces = true,
-            semicolons = true -- ensure semicolons are added
-          }
-        })
-      end,
-    })
-    -- end
+    on_attach(client, bufnr)
+    -- Formatting on save is handled by null-ls with Prettier
   end,
   capabilities = capabilities,
   settings = {

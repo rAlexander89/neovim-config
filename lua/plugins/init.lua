@@ -6,7 +6,7 @@ local default_plugins = {
 
   {
     "NvChad/base46",
-    branch = "v2.0",
+    branch = "v3.0",
     build = function()
       require("base46").load_all_highlights()
     end,
@@ -14,8 +14,14 @@ local default_plugins = {
 
   {
     "NvChad/ui",
-    branch = "v2.0",
+    branch = "v3.0",
     lazy = false,
+    init = function()
+      require("core.utils").load_mappings "tabufline"
+    end,
+    config = function()
+      require "nvchad"
+    end,
   },
 
   {
@@ -257,13 +263,17 @@ local default_plugins = {
       -- add any opts here
       -- for example
       provider = "claude",
-      openai = {
-        endpoint = "https://api.anthropic.com",
-        model = "claude-3-7-sonnet-20250219", -- your desired model (or use gpt-4o, etc.)
-        timeout = 30000,                      -- timeout in milliseconds
-        temperature = 0,                      -- adjust if needed
-        max_tokens = 4096,
-        -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
+      providers = {
+        openai = {
+          endpoint = "https://api.anthropic.com",
+          model = "claude-3-7-sonnet-20250219", -- your desired model (or use gpt-4o, etc.)
+          timeout = 30000,                      -- timeout in milliseconds
+          max_tokens = 4096,
+          extra_request_body = {
+            temperature = 0,                    -- adjust if needed
+          },
+          -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
+        },
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`

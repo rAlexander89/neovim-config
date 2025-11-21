@@ -1,4 +1,4 @@
-local null_ls = require("null-ls")
+local null_ls = require("null-ls")  -- none-ls is backwards compatible with null-ls require
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 local opts = {
@@ -21,15 +21,7 @@ local opts = {
 
     }),
     null_ls.builtins.formatting.stylua,
-    null_ls.builtins.diagnostics.eslint.with({
-      diagnostics_format = "[eslint] #{m}\n(#{c})",
-      filetypes = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact"
-      },
-    }),
+    -- Note: eslint diagnostics removed from none-ls, use eslint-lsp instead (configured separately)
   },
   on_attach = function(client, bufnr)
     if client.supports_method("textDocument/formatting") then

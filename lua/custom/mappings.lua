@@ -133,6 +133,13 @@ end
 
 M.custom = {
   n = {
+    ["<leader>tm"] = {
+      function()
+        vim.opt.modifiable = not vim.opt.modifiable:get()
+        print("modifiable: " .. tostring(vim.opt.modifiable:get()))
+      end,
+      "Toggle modifiable"
+    },
     ["<leader>fp"] = {
       insert_file_path_header,
       "Insert file path as header comment"

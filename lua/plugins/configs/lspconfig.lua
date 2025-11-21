@@ -1,6 +1,15 @@
 dofile(vim.g.base46_cache .. "lsp")
 require "nvchad.lsp"
 
+-- Temporarily suppress deprecation warnings while we use the old lspconfig API
+local notify = vim.notify
+vim.notify = function(msg, level, opts)
+  if msg:match("lspconfig.*deprecated") then
+    return
+  end
+  notify(msg, level, opts)
+end
+
 local M = {}
 local utils = require "core.utils"
 
@@ -8,9 +17,8 @@ local utils = require "core.utils"
 M.on_attach = function(client, bufnr)
   utils.load_mappings("lspconfig", { buffer = bufnr })
 
-  if client.server_capabilities.signatureHelpProvider then
-    require("nvchad.signature").setup(client)
-  end
+  -- Note: nvchad.signature was removed in v3.0
+  -- Signature help still works via LSP, just without the custom NvChad UI
 end
 
 -- disable semantic tokens
@@ -40,28 +48,6 @@ M.capabilities.textDocument.completion.completionItem = {
   },
 }
 
-require("lspconfig").lua_ls.setup {
-  on_init = M.on_init,
-  on_attach = M.on_attach,
-  capabilities = M.capabilities,
-
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { "vim" },
-      },
-      workspace = {
-        library = {
-          [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-          [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-          [vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types"] = true,
-          [vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy"] = true,
-        },
-        maxPreload = 100000,
-        preloadFileSize = 10000,
-      },
-    },
-  },
-}
+-- lua_ls is configured in custom/configs/lspconfig.lua to avoid duplicate setup
 
 return M

@@ -21,6 +21,7 @@ local plugins = {
   },
   {
     "neovim/nvim-lspconfig",
+    version = "v2.*",  -- Pin to v2.x which supports old API
     config = function()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
@@ -33,8 +34,8 @@ local plugins = {
     end,
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    ft = "go",
+    "nvimtools/none-ls.nvim",  -- Community fork of null-ls, compatible with nvim 0.11+
+    ft = { "go", "javascript", "javascriptreact", "typescript", "typescriptreact" },
     opts = function()
       return require "custom.configs.null-ls"
     end,
@@ -75,6 +76,7 @@ local plugins = {
         "typescript", -- for better js/ts support
         "regex",      -- for regex in javascript
         "markdown",   -- for jsdoc preview
+        "mermaid",    -- for mermaid diagrams
         --
         "pug",
       },

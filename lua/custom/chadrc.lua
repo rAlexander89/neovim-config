@@ -1,18 +1,11 @@
 --@type ChadrcConfig
 local M = {}
 
--- Set the theme dynamically
-M.ui = {
+-- v3.0: theme config moved to base46
+M.base46 = {
   theme = "runpuccin",
   theme_toggle = { "runpuccin" },
   transparency = true,
-  statusline = {
-    path_enabled = true,
-  },
-  -- Add rounded borders config
-  border = "rounded",
-  float_border = "rounded",
-  telescope = { style = "bordered" },
   hl_override = {
     -- make strings italic
     ["@string"] = {
@@ -54,10 +47,120 @@ M.ui = {
       bg = "#ff4da6",
       fg = "#f2f3f7"
     },
+    -- Make tabline visible even with transparency enabled
+    TbBufOn = {
+      fg = "#f2f3f7",
+      bg = "#24214d",
+    },
+    TbBufOff = {
+      fg = "#7984D1",
+      bg = "#1c1940",
+    },
+    TbFill = {
+      bg = "#0c0a20",
+    },
+    TbBufOnClose = {
+      fg = "#ff4da6",
+      bg = "#24214d",
+    },
+    TbBufOffClose = {
+      fg = "#7984D1",
+      bg = "#1c1940",
+    },
+    TbBufOnModified = {
+      fg = "#42c6ff",
+      bg = "#24214d",
+    },
+    TbBufOffModified = {
+      fg = "#ff4da6",
+      bg = "#1c1940",
+    },
+    -- Statusline highlights
+    St_NormalMode = {
+      fg = "#0c0a20",
+      bg = "#42c6ff",
+      bold = true,
+    },
+    St_InsertMode = {
+      fg = "#0c0a20",
+      bg = "#ff4da6",
+      bold = true,
+    },
+    St_VisualMode = {
+      fg = "#0c0a20",
+      bg = "#df85ff",
+      bold = true,
+    },
+    St_ReplaceMode = {
+      fg = "#0c0a20",
+      bg = "#ff9b50",
+      bold = true,
+    },
+    St_CommandMode = {
+      fg = "#0c0a20",
+      bg = "#ffe566",
+      bold = true,
+    },
+    St_TerminalMode = {
+      fg = "#0c0a20",
+      bg = "#62dfff",
+      bold = true,
+    },
+    StatusLine = {
+      bg = "#131033",
+    },
+    St_EmptySpace = {
+      bg = "#131033",
+    },
+    St_file = {
+      fg = "#f2f3f7",
+      bg = "#24214d",
+    },
+    St_gitIcons = {
+      fg = "#ff4da6",
+      bg = "#1c1940",
+      bold = true,
+    },
+    St_LspMsg = {
+      fg = "#42c6ff",
+      bg = "#131033",
+    },
+    St_LspStatus = {
+      fg = "#42c6ff",
+      bg = "#1c1940",
+    },
+    St_cwd = {
+      fg = "#f2f3f7",
+      bg = "#24214d",
+    },
+    St_pos = {
+      fg = "#f2f3f7",
+      bg = "#1c1940",
+    },
+    St_sep = {
+      fg = "#24214d",
+      bg = "#131033",
+    },
+    St_sep_r = {
+      fg = "#24214d",
+      bg = "#131033",
+    },
   }
 }
 
-
+-- v3.0: UI-specific config (non-theme settings)
+M.ui = {
+  statusline = {
+    path_enabled = true,  -- Your original setting
+  },
+  telescope = {
+    style = "bordered",  -- Your original setting
+  },
+  tabufline = {
+    enabled = true,
+    lazyload = false,  -- Show tabs immediately on startup
+  },
+}
 
 M.plugins = "custom.plugins"
 M.mappings = require "custom.mappings"
@@ -80,6 +183,18 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.shiftwidth = 2
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
+  end,
+})
+
+-- ensure regular buffers are always modifiable
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  callback = function()
+    local buftype = vim.bo.buftype
+    -- only set modifiable for normal file buffers
+    if buftype == "" then
+      vim.opt_local.modifiable = true
+    end
   end,
 })
 
