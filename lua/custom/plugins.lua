@@ -48,6 +48,7 @@ local plugins = {
       "typescript",
       "typescriptreact",
       "html",
+      "templ",
     },
     config = function()
       require("nvim-ts-autotag").setup()
@@ -71,6 +72,7 @@ local plugins = {
         "json",
         "go",
         "gomod",
+        "templ",
         "lua",
         "tsx",        -- for react
         "typescript", -- for better js/ts support
