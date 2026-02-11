@@ -18,10 +18,11 @@ M.general = {
   n = {
     ["<Esc>"] = { "<cmd> noh <CR>", "Clear highlights" },
     -- switch between windows
-    ["<C-h>"] = { "<C-w>h", "Window left" },
-    ["<C-l>"] = { "<C-w>l", "Window right" },
-    ["<C-j>"] = { "<C-w>j", "Window down" },
-    ["<C-k>"] = { "<C-w>k", "Window up" },
+    -- Disabled: vim-tmux-navigator handles these
+    -- ["<C-h>"] = { "<C-w>h", "Window left" },
+    -- ["<C-l>"] = { "<C-w>l", "Window right" },
+    -- ["<C-j>"] = { "<C-w>j", "Window down" },
+    -- ["<C-k>"] = { "<C-w>k", "Window up" },
 
     -- save
     ["<C-s>"] = { "<cmd> w <CR>", "Save file" },
@@ -295,21 +296,6 @@ M.telescope = {
     ["<leader>th"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
 
     ["<leader>ma"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
-  },
-  i = {
-    -- navigation in insert mode
-    ["<C-j>"] = {
-      function()
-        require("telescope.actions").move_selection_next()
-      end,
-      "Move to next result",
-    },
-    ["<C-k>"] = {
-      function()
-        require("telescope.actions").move_selection_previous()
-      end,
-      "Move to previous result",
-    },
   },
 }
 
