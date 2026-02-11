@@ -21,6 +21,11 @@ local default_plugins = {
     end,
     config = function()
       require "nvchad"
+      local statusline_cache = vim.g.base46_cache .. "statusline"
+      if not vim.uv.fs_stat(statusline_cache) then
+        require("base46").compile()
+      end
+      dofile(statusline_cache)
     end,
   },
 
