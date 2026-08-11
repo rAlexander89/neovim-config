@@ -98,7 +98,11 @@ local plugins = {
       },
       indent = {
         enable = true,
-        disable = { "rust" }, -- Disable for Rust, use cindent instead
+        -- Disable for Rust/C/C++, use cindent instead. Treesitter indents from
+        -- the parse tree, so a half-typed block (an unclosed brace, a macro
+        -- continuation) is an ERROR node and every new line snaps to column 0.
+        -- cindent is heuristic and handles incomplete code.
+        disable = { "rust", "c", "cpp" },
       },
       incrcmental_selection = {
         enable = true,
