@@ -21,6 +21,7 @@ local opts = {
 
     }),
     null_ls.builtins.formatting.stylua,
+    null_ls.builtins.formatting.clang_format,
     -- Note: eslint diagnostics removed from none-ls, use eslint-lsp instead (configured separately)
   },
   on_attach = function(client, bufnr)

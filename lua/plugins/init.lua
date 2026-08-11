@@ -34,6 +34,20 @@ local default_plugins = {
     init = function()
       require("core.utils").load_mappings "nvterm"
     end,
+    opts = {
+      terminals = {
+        type_opts = {
+          float = {
+            relative = "editor",
+            row = 0.075,
+            col = 0.025,
+            width = 0.95,
+            height = 0.75,
+            border = "single",
+          },
+        },
+      },
+    },
     config = function(_, opts)
       require "base46.term"
       require("nvterm").setup(opts)

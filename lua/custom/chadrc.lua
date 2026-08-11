@@ -111,19 +111,19 @@ M.base46 = {
       bg = "#62dfff",
       bold = true,
     },
-    St_TerminalModeSep = { fg = "#62dfff", bg = "#24214d" },
-    St_NTerminalModeSep = { fg = "#ffe566", bg = "#24214d" },
-    St_SelectModeSep = { fg = "#62dfff", bg = "#24214d" },
-    St_ConfirmModeSep = { fg = "#42c6ff", bg = "#24214d" },
+    St_TerminalModeSep = { fg = "#62dfff", bg = "NONE" },
+    St_NTerminalModeSep = { fg = "#ffe566", bg = "NONE" },
+    St_SelectModeSep = { fg = "#62dfff", bg = "NONE" },
+    St_ConfirmModeSep = { fg = "#42c6ff", bg = "NONE" },
     StatusLine = {
-      bg = "#131033",
+      bg = "NONE",
     },
     St_EmptySpace = {
-      bg = "#131033",
+      bg = "NONE",
     },
     St_file = {
       fg = "#f2f3f7",
-      bg = "#24214d",
+      bg = "NONE",
     },
     St_gitIcons = {
       fg = "#ff4da6",
@@ -192,6 +192,17 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.shiftwidth = 2
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
+  end,
+})
+
+-- 4-space indentation for C/C++
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "c", "cpp" },
+  callback = function()
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.expandtab = true
   end,
 })
 
