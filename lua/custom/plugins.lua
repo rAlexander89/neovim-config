@@ -453,5 +453,13 @@ local plugins = {
       vim.g.tmux_navigator_save_on_switch = 2
     end,
   },
+  {
+    -- Local plugin: press `ns` in a C buffer to build a struct.
+    dir = vim.fn.expand "~/dev/ns.nvim",
+    ft = { "c", "cpp" },
+    config = function()
+      require("ns").setup()
+    end,
+  },
 }
 return plugins
