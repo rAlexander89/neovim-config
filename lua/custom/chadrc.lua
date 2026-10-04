@@ -81,40 +81,49 @@ M.base46 = {
       bg = "#42c6ff",
       bold = true,
     },
+    St_NormalModeSep = { fg = "#42c6ff", bg = "#24214d" },
     St_InsertMode = {
       fg = "#0c0a20",
       bg = "#ff4da6",
       bold = true,
     },
+    St_InsertModeSep = { fg = "#ff4da6", bg = "#24214d" },
     St_VisualMode = {
       fg = "#0c0a20",
       bg = "#df85ff",
       bold = true,
     },
+    St_VisualModeSep = { fg = "#df85ff", bg = "#24214d" },
     St_ReplaceMode = {
       fg = "#0c0a20",
       bg = "#ff9b50",
       bold = true,
     },
+    St_ReplaceModeSep = { fg = "#ff9b50", bg = "#24214d" },
     St_CommandMode = {
       fg = "#0c0a20",
       bg = "#ffe566",
       bold = true,
     },
+    St_CommandModeSep = { fg = "#ffe566", bg = "#24214d" },
     St_TerminalMode = {
       fg = "#0c0a20",
       bg = "#62dfff",
       bold = true,
     },
+    St_TerminalModeSep = { fg = "#62dfff", bg = "NONE" },
+    St_NTerminalModeSep = { fg = "#ffe566", bg = "NONE" },
+    St_SelectModeSep = { fg = "#62dfff", bg = "NONE" },
+    St_ConfirmModeSep = { fg = "#42c6ff", bg = "NONE" },
     StatusLine = {
-      bg = "#131033",
+      bg = "NONE",
     },
     St_EmptySpace = {
-      bg = "#131033",
+      bg = "NONE",
     },
     St_file = {
       fg = "#f2f3f7",
-      bg = "#24214d",
+      bg = "NONE",
     },
     St_gitIcons = {
       fg = "#ff4da6",
@@ -183,6 +192,17 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.shiftwidth = 2
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
+  end,
+})
+
+-- 4-space indentation for C/C++
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "c", "cpp" },
+  callback = function()
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.expandtab = true
   end,
 })
 

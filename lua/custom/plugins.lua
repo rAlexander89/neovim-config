@@ -15,6 +15,13 @@ local plugins = {
         "eslint-lsp",                 -- javascript linter
         "prettier",                   -- formatter
         "json-lsp",
+        -- rust
+        "rust-analyzer",
+        "codelldb",                   -- debugger for rust
+        -- c/c++
+        "clangd",
+        "clang-format",
+        "cmake-language-server",
 
       },
     },
@@ -35,7 +42,7 @@ local plugins = {
   },
   {
     "nvimtools/none-ls.nvim",  -- Community fork of null-ls, compatible with nvim 0.11+
-    ft = { "go", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    ft = { "go", "javascript", "javascriptreact", "typescript", "typescriptreact", "c", "cpp" },
     opts = function()
       return require "custom.configs.null-ls"
     end,
@@ -79,6 +86,9 @@ local plugins = {
         "regex",      -- for regex in javascript
         "markdown",   -- for jsdoc preview
         "mermaid",    -- for mermaid diagrams
+        "rust",       -- for rust syntax highlighting
+        "toml",       -- for Cargo.toml
+        "c",          -- for c syntax highlighting
         --
         "pug",
       },
@@ -88,6 +98,11 @@ local plugins = {
       },
       indent = {
         enable = true,
+        -- Disable for Rust/C/C++, use cindent instead. Treesitter indents from
+        -- the parse tree, so a half-typed block (an unclosed brace, a macro
+        -- continuation) is an ERROR node and every new line snaps to column 0.
+        -- cindent is heuristic and handles incomplete code.
+        disable = { "rust", "c", "cpp" },
       },
       incrcmental_selection = {
         enable = true,
@@ -334,6 +349,117 @@ local plugins = {
         providers_regex_syntax_denylist = {},
       })
     end
+  },
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^5",
+    ft = { "rust" },
+    config = function()
+      local on_attach = require("plugins.configs.lspconfig").on_attach
+      local capabilities = require("plugins.configs.lspconfig").capabilities
+
+      vim.g.rustaceanvim = {
+        server = {
+          on_attach = function(client, bufnr)
+            -- Call standard on_attach to load all keybindings
+            on_attach(client, bufnr)
+            -- Disable inlay hints (only show types with K hover)
+            vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+
+            -- Enable real-time diagnostics for Rust
+            vim.diagnostic.config({
+              virtual_text = true,
+              signs = true,
+              update_in_insert = true, -- Show diagnostics while typing
+              underline = true,
+              severity_sort = true,
+            })
+
+            -- Set proper indentation for Rust
+            vim.bo[bufnr].cindent = true
+            vim.bo[bufnr].cinoptions = "L0,(0,Ws,J1,j1"
+            vim.bo[bufnr].cinkeys = "0{,0},!^F,o,O,e"
+
+            -- Auto-format on save
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ bufnr = bufnr })
+              end,
+            })
+          end,
+          capabilities = capabilities,
+          default_settings = {
+            ['rust-analyzer'] = {
+              -- If a per-project .nvim.lua has set vim.g.ra_project_root,
+              -- scope rust-analyzer to that crate only. Its declared dependencies
+              -- (including crates/shared) are still fully loaded.
+              linkedProjects = vim.g.ra_project_root
+                and { vim.g.ra_project_root .. '/Cargo.toml' }
+                or nil,
+              cargo = {
+                allFeatures = true,
+                loadOutDirsFromCheck = true,
+                buildScripts = {
+                  enable = true,
+                },
+              },
+              check = {
+                command = "clippy",
+                extraArgs = { "--no-deps" },
+                enable = false, -- Disable check on save since we check on type
+              },
+              diagnostics = {
+                enable = true,
+                experimental = {
+                  enable = true,
+                },
+              },
+              procMacro = {
+                enable = true,
+                attributes = {
+                  enable = true,
+                },
+              },
+              rustfmt = {
+                extraArgs = { "--config", "hard_tabs=false,tab_spaces=2" },
+              },
+            },
+          },
+        },
+      }
+    end,
+  },
+  {
+    "saecki/crates.nvim",
+    event = { "BufRead Cargo.toml" },
+    config = function()
+      require("crates").setup({
+        completion = {
+          cmp = {
+            enabled = true,
+          },
+        },
+      })
+    end,
+  },
+  {
+    "christoomey/vim-tmux-navigator",
+    lazy = false,
+    config = function()
+      -- Disable default mappings, we'll use the plugin's defaults
+      vim.g.tmux_navigator_no_mappings = 0
+      -- Save pane on navigation
+      vim.g.tmux_navigator_save_on_switch = 2
+    end,
+  },
+  {
+    -- Local plugin: press `ns` in a C buffer to build a struct.
+    dir = vim.fn.expand "~/dev/ns.nvim",
+    ft = { "c", "cpp" },
+    config = function()
+      require("ns").setup()
+    end,
   },
 }
 return plugins

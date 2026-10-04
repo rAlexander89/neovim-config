@@ -21,6 +21,11 @@ local default_plugins = {
     end,
     config = function()
       require "nvchad"
+      local statusline_cache = vim.g.base46_cache .. "statusline"
+      if not vim.uv.fs_stat(statusline_cache) then
+        require("base46").compile()
+      end
+      dofile(statusline_cache)
     end,
   },
 
@@ -29,6 +34,20 @@ local default_plugins = {
     init = function()
       require("core.utils").load_mappings "nvterm"
     end,
+    opts = {
+      terminals = {
+        type_opts = {
+          float = {
+            relative = "editor",
+            row = 0.075,
+            col = 0.025,
+            width = 0.95,
+            height = 0.75,
+            border = "single",
+          },
+        },
+      },
+    },
     config = function(_, opts)
       require "base46.term"
       require("nvterm").setup(opts)

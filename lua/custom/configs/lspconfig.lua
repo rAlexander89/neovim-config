@@ -200,13 +200,38 @@ lspconfig.cssls.setup({
   filetypes = { "css", "scss", "less" },
 })
 
-local servers = { 'ccls', 'cmake' }
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-  })
-end
+lspconfig.cmake.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+lspconfig.clangd.setup({
+  on_attach = function(client, bufnr)
+    -- clangd has its own formatting via clang-format; none-ls handles format-on-save
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+    on_attach(client, bufnr)
+  end,
+  capabilities = capabilities,
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
+    "--fallback-style=llvm",
+  },
+  filetypes = { "c", "cpp", "objc", "objcpp" },
+  root_dir = util.root_pattern(
+    "compile_commands.json",
+    "compile_flags.txt",
+    ".clangd",
+    "CMakeLists.txt",
+    "Makefile",
+    ".git"
+  ),
+})
 
 
 lspconfig.templ.setup({
@@ -286,3 +311,17 @@ lspconfig.lua_ls.setup {
     },
   },
 }
+
+lspconfig.terraformls.setup({
+  on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({ bufnr = bufnr })
+      end,
+    })
+  end,
+  capabilities = capabilities,
+  filetypes = { "terraform", "terraform-vars" },
+})
